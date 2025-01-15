@@ -80,11 +80,12 @@
             const url = document.getElementById("urlInput").value;
             const description = document.getElementById("descriptionInput").value;
             const siteType = document.getElementById("siteTypeInput").value;
-
+            const crawlType = "normal"
             const data = {
                 url: url,
                 description: description,
                 siteType: siteType,
+                crawlType: crawlType
             };
 
             ws.send(JSON.stringify(data));

@@ -40,14 +40,18 @@ class BS4Crawler(CrawlerBase):
 
             requests = list()
             for link in links:
-                if link not in self.visited_links:
-                    requests.append(self.get_url_content(session, link))
-                    self.visited_links.append(link)
+                if link is not None:
+                    if link not in self.visited_links and link.startswith(self.url):
+                        print(link)
+                        requests.append(self.get_url_content(session, link))
+                        self.visited_links.append(link)
+            print("Starting TO gathering Links")
             if requests:
                 responses = await asyncio.gather(*requests, return_exceptions=True)
                 for response in responses:
                     if response:
                         self.url_contents.append(response)
+            print("Crawling Done")
 
     async def get_url_content(self, session, link):
         response = await self._fetch(session, link)
