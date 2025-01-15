@@ -48,6 +48,10 @@
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -67,20 +71,44 @@
     <ul id="messages"></ul>
 
     <script>
-        const ws = new WebSocket("ws://127.101.43.41:8000/socket/ws");
+        let ws;
 
-        ws.onmessage = function(event) {
-            const messages = document.getElementById("messages");
-            const message = document.createElement("li");
-            message.textContent = event.data;
-            messages.appendChild(message);
-        };
+        function connectWebSocket() {
+            ws = new WebSocket("ws://127.101.43.41:8000/socket/ws");
+
+            ws.onmessage = function(event) {
+                const messages = document.getElementById("messages");
+                const message = document.createElement("li");
+                message.textContent = event.data;
+                messages.appendChild(message);
+            };
+
+            ws.onerror = function(event) {
+                const messages = document.getElementById("messages");
+                const errorMessage = document.createElement("li");
+                errorMessage.textContent = "Error: " + event.data;
+                errorMessage.className = "error";
+                messages.appendChild(errorMessage);
+            };
+
+            ws.onclose = function(event) {
+                const messages = document.getElementById("messages");
+                const closeMessage = document.createElement("li");
+                closeMessage.textContent = "Connection closed. Click 'Send' to reconnect.";
+                closeMessage.className = "error";
+                messages.appendChild(closeMessage);
+            };
+        }
 
         function sendMessage() {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                connectWebSocket();
+            }
+
             const url = document.getElementById("urlInput").value;
             const description = document.getElementById("descriptionInput").value;
             const siteType = document.getElementById("siteTypeInput").value;
-            const crawlType = "normal"
+            const crawlType = "normal";
             const data = {
                 url: url,
                 description: description,
@@ -89,8 +117,13 @@
             };
 
             ws.send(JSON.stringify(data));
-            document.getElementById("messageInput").value = "";
+            document.getElementById("urlInput").value = "";
+            document.getElementById("descriptionInput").value = "";
+            document.getElementById("siteTypeInput").value = "";
         }
+
+        // Initial connection
+        connectWebSocket();
     </script>
 </body>
 </html>
