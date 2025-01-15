@@ -17,8 +17,12 @@ class ConnectionManager:
         print(f"User {unique_id} connected.")
         return unique_id
 
-    def disconnect(self, unique_id):
+    async def disconnect(self, unique_id):
         if unique_id in self.active_connections:
+            if self.user_states[unique_id].get("connection_state", None) != 'closed':
+                print(f"Closing connection with user {unique_id}.")
+                await self.active_connections[unique_id].close(code=1000)
+                self.user_states[unique_id]['connection_state'] = 'closed'
             del self.active_connections[unique_id]
             del self.user_states[unique_id]
             print(f"User {unique_id} disconnected.")

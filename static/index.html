@@ -35,22 +35,53 @@
         button:hover {
             background-color: #0056b3;
         }
-        #messages {
+        #messages, #status {
             list-style-type: none;
             padding: 0;
             margin-top: 20px;
             text-align: left;
         }
-        #messages li {
+        #messages li, #status li {
             background-color: #e9ecef;
             padding: 10px;
             margin: 5px 0;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            white-space: pre-wrap; /* Ensure text wraps */
         }
         .error {
             color: red;
             font-weight: bold;
+        }
+        /* Loading animation */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            color: #007bff;
+        }
+        .loading::after {
+            content: " ";
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            margin-left: 0.5em;
+            border: 2px solid #007bff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Cute caption */
+        .caption {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
+            font-style: italic;
         }
     </style>
 </head>
@@ -69,18 +100,38 @@
         <button onclick="sendMessage()">Send</button>
     </div>
     <ul id="messages"></ul>
+    <div id="status"></div>
 
     <script>
         let ws;
+        let lastMessageElement = null; // Reference to the last message element
 
         function connectWebSocket() {
             ws = new WebSocket("ws://127.101.43.41:8000/socket/ws");
 
             ws.onmessage = function(event) {
-                const messages = document.getElementById("messages");
-                const message = document.createElement("li");
-                message.textContent = event.data;
-                messages.appendChild(message);
+                const data = JSON.parse(event.data);
+                if (data.type === "status") {
+                    const statusDiv = document.getElementById("status");
+                    statusDiv.innerHTML = `
+                        <div class="loading">${data.message}</div>
+                        <div class="caption">Hang tight, my love! We're working on it...</div>
+                    `;
+                } else if (data.type === "message") {
+                    const messages = document.getElementById("messages");
+
+                    // If there's no last message element or the message is complete, create a new one
+                    if (!lastMessageElement || data.is_complete) {
+                        lastMessageElement = document.createElement("li");
+                        messages.appendChild(lastMessageElement);
+                    }
+
+                    // Append the chunk to the last message element
+                    lastMessageElement.textContent += data.message;
+
+                    // Scroll to the bottom of the messages container
+                    messages.scrollTop = messages.scrollHeight;
+                }
             };
 
             ws.onerror = function(event) {
@@ -92,6 +143,11 @@
             };
 
             ws.onclose = function(event) {
+                // Clear the loading animation and caption
+                const statusDiv = document.getElementById("status");
+                statusDiv.innerHTML = ""; // Clear the status div
+
+                // Notify the user that the connection is closed
                 const messages = document.getElementById("messages");
                 const closeMessage = document.createElement("li");
                 closeMessage.textContent = "Connection closed. Click 'Send' to reconnect.";

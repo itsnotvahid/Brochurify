@@ -11,41 +11,38 @@ router = APIRouter()
 
 @router.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    user_unique_id = await manager.connect(websocket)
-
     try:
-        while True:
-            data = await websocket.receive_text()
-            data = json.loads(data)
-            user_state = manager.get_user_state(user_unique_id)
-            if not user_state:
-                orchestrator = Orchestrator(crawler_service=CrawlerService(url=data['url'],
-                                                                           crawl_type=data['crawlType']),
-                                            llm_service=LLMService("hello"))
+        user_unique_id = await manager.connect(websocket)
+        status_message = {"type": "status", "message": "Processing your request..."}
+        data = await websocket.receive_text()
+        data = json.loads(data)
+        user_state = manager.get_user_state(user_unique_id)
+        if not user_state:
+            orchestrator = Orchestrator(crawler_service=CrawlerService(url=data['url'],
+                                                                       crawl_type=data['crawlType']),
+                                        llm_service=LLMService("hello"))
+            status_message = dict(type="status", message="Processing your request...")
 
-                await manager.send_message(unique_id=user_unique_id,
-                                           message=f"Starting To Crawl FOR {data['url']}")
+            await manager.send_message(unique_id=user_unique_id,
+                                       message=json.dumps(status_message))
 
-                manager.modify_user_state(user_unique_id, "crawling")
-                # crawler = crawl_builder(data['url'], data['crawlType'])
-                # web_content = await crawler.crawl()
-                async for update in orchestrator.stream_website_data(
-                    user_id=user_unique_id,
-                    manager=manager
-                ):
-                    await manager.send_message(user_unique_id, update)
-                orchestrator.stream_website_data(user_id=user_unique_id, manager=manager)
+            manager.modify_user_state(user_unique_id, "crawling")
 
-                async for update in orchestrator.stream_website_data(
-                    user_id=user_unique_id,
-                    manager=manager
-                ):
-                    await manager.send_message(user_unique_id, update)
+            async for update in orchestrator.stream_website_data(
+                user_id=user_unique_id,
+                manager=manager
+            ):
+                message = dict(type="message", message=update,
+                               is_complete=False)
+                await manager.send_message(user_unique_id, json.dumps(message))
+            orchestrator.stream_website_data(user_id=user_unique_id, manager=manager)
 
-                await manager.send_message(user_unique_id, "Disconncting YOU NOW")
-                manager.disconnect(user_unique_id)
+            status_message = dict(type="status", message="Disconncting YOU NOW")
+            message = dict(type="message", message="",
+                           is_complete=True)
+            await manager.send_message(user_unique_id, json.dumps(message))
+            await manager.send_message(user_unique_id, json.dumps(status_message))
+            await manager.disconnect(user_unique_id)
 
-            else:
-                await manager.send_message(unique_id=user_unique_id, message="Please Be Patient")
     except WebSocketDisconnect:
         await manager.disconnect(user_unique_id)
