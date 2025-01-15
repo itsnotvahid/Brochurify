@@ -1,7 +1,10 @@
 from fastapi import FastAPI
 import uvicorn
+from api import router
 
 app = FastAPI()
+
+app.include_router(router)
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
