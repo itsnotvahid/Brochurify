@@ -1,7 +1,7 @@
 
 # Brochurify
 
-Welcome to Brochurify! This project leverages cutting-edge Large Language Models (LLMs) to deliver efficient webpage summarization and brochure generation.
+Welcome to Brochurify! This project is designed to simplify website data extraction and summarization, providing a streamlined way to generate brochures from web content.
 
 ## Table of Contents
 
