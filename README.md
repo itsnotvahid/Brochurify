@@ -38,23 +38,25 @@ Key Technologies:
 
 Follow these steps to set up the project locally:
 
-1. **Clone the Repository:**
+### 1. **Clone the Repository:**
 
    ```bash
    git clone https://github.com/itsnotvahid/Brochurify.git
    cd Brochurify
    ```
 
-2. **Create a Virtual Environment:**
+### 2. **Create a Virtual Environment:**
 
    It's recommended to use a virtual environment to manage dependencies.
 
+   On **Linux/macOS**, run:
+
    ```bash
    python3 -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scriptsctivate`
+   source venv/bin/activate
    ```
 
-3. **Install Dependencies:**
+### 3. **Install Dependencies:**
 
    Ensure you have `pip` installed. Then, install the required packages:
 
@@ -62,13 +64,16 @@ Follow these steps to set up the project locally:
    pip install -r requirements.txt
    ```
 
-4. **Create a `.env` File:**
+### 4. **Create a `.env` File:**
 
    The application requires certain environment variables. Create a `.env` file in the root directory with the following content:
 
    ```env
    OPENAI_API_KEY=your_openai_api_key_here
-   # Add any other environment variables as needed
+   SOCKET_HOST=127.0.0.1
+   SOCKET_PORT=8912
+   STATIC_HOST=127.0.0.1
+   STATIC_PORT=8913
    ```
 
    Replace `your_openai_api_key_here` with your actual OpenAI API key. Ensure this file is included in your `.gitignore` to prevent it from being tracked by version control.
@@ -79,13 +84,21 @@ Follow these steps to set up the project locally:
 
 To run the application:
 
-1. **Start the FastAPI Server:**
+### 1. **Start the FastAPI Server with the `run.sh` script:**
+
+   Make sure the `run.sh` script is executable. If not, change its permissions:
 
    ```bash
-   uvicorn main:app --reload
+   chmod +x run.sh
    ```
 
-2. **Access the Application:**
+   Now, run the script:
+
+   ```bash
+   ./run.sh
+   ```
+
+### 2. **Access the Application:**
 
    Open your browser and navigate to `http://localhost:8000` to interact with the application.
 
