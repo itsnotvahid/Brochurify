@@ -74,7 +74,7 @@ Follow these steps to set up the project locally:
    STATIC_PORT=8913
    ```
 
-   Replace `your_openai_api_key_here` with your actual OpenAI API key. Ensure this file is included in your `.gitignore` to prevent it from being tracked by version control.
+   Replace `your_openai_api_key_here` with your actual OpenAI API key.
 
 ---
 
