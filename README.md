@@ -100,7 +100,7 @@ To run the application:
 
 ### 2. **Access the Application:**
 
-   Open your browser and navigate to `http://localhost:8000` to interact with the application.
+   Open your browser and navigate to `"http://STATIC_HOST:STATIC_PORT" to interact with the application.
 
 ---
 
@@ -109,9 +109,7 @@ To run the application:
 - `main.py`: The entry point of the application.
 - `api/`: Contains the API endpoints.
 - `services/`: Includes the core logic for summarization and brochure generation.
-- `static/`: Holds static files like CSS and JavaScript.
-- `templates/`: Contains HTML templates for rendering web pages.
-- `exceptions.py`: Custom exception handling.
+- `static/`: Holds AI GENERATED static files.
 
 ---
 
