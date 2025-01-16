@@ -1,5 +1,5 @@
-from fastapi import HTTPException
 from fastapi import WebSocketException
+
 
 class BadUrlException(WebSocketException):
     def __init__(self):
@@ -8,12 +8,13 @@ class BadUrlException(WebSocketException):
                         please check and try again."
 
 
-class BadCrawlType(WebSocketException):
+class InvalidCrawlType(WebSocketException):
     def __init__(self):
-        self.reason = "Bad TYPE BRO"
+        self.reason = "Invalid Crawl Type"
         self.code = 1000
 
-class BadContent(WebSocketException):
+
+class InvalidContent(WebSocketException):
     def __init__(self):
         self.reason = "Bad Content, Try Again"
         self.code = 1000

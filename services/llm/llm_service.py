@@ -2,9 +2,7 @@ from .builder import llm_builder
 
 
 class LLMService:
-    def __init__(self, model_type,
-                       model_name,
-                       crawl_type):
+    def __init__(self, model_type, model_name, crawl_type):
 
         self.llm = llm_builder(model_type, model_name, crawl_type)
 

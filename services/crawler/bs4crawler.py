@@ -2,7 +2,6 @@ import aiohttp
 import asyncio
 from exceptions import BadUrlException
 from bs4 import BeautifulSoup
-from ._content_class import URLContent
 from.__crawler_base import CrawlerBase
 
 
@@ -59,4 +58,4 @@ class BS4Crawler(CrawlerBase):
             return None
         soup = BeautifulSoup(response, 'html.parser')
         text = self.get_soup_content(soup)
-        return URLContent(link, text)
+        return dict(url=link, content=text)

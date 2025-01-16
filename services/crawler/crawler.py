@@ -1,4 +1,4 @@
-from exceptions import BadCrawlType
+from exceptions import InvalidCrawlType
 from .bs4crawler import BS4Crawler
 
 
@@ -14,5 +14,5 @@ class CrawlerService:
     def crawl_builder(url, crawl_type):
         if crawl_type == "normal":
             return BS4Crawler(url)
-        raise BadCrawlType()
+        raise InvalidCrawlType()
 

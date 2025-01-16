@@ -1,5 +1,4 @@
 from abc import abstractmethod, ABC
-from typing import Dict
 
 
 class BaseSummarizer(ABC):
@@ -13,12 +12,14 @@ class BaseSummarizer(ABC):
         pass
 
     def prompts_for_removing_links(self, url, links, description=None, site_type=None):
-        # System prompt: Defines the task and rules
         link_system_prompt = (
             "You are provided with a list of links found on a webpage. "
-            "Your task is to filter out irrelevant links and retain those that are most relevant for creating a brochure. "
-            "Consider links that provide valuable information about the site's content, such as main articles, key information pages, or other significant sections.\n"
-            "Exclude links that are not useful for a brochure, such as Terms of Service, Privacy policies, and email links.\n"
+            "Your task is to filter out irrelevant links and retain those that are most\
+             relevant for creating a brochure. "
+            "Consider links that provide valuable information about the site's content,\
+             such as main articles, key information pages, or other significant sections.\n"
+            "Exclude links that are not useful for a brochure, such as Terms of Service,\
+             Privacy policies, and email links.\n"
             "You should respond in JSON format as shown in the example below:\n"
             "{\n"
             '    "links": [\n'

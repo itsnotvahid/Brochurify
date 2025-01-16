@@ -3,15 +3,12 @@ from .open_ai import OpenAISummarize
 SUPPORTED_MODELS = {
     "openai": {
         "summarize": "OpenAISummarize",
-        "search": "OpenAISearch"
     },
     "ollama": {
         "summarize": "OllamaSummarize"
     },
-    "anthropic": {
-        "summarize": "AnthropicSummarize"
-    }
 }
+
 
 def llm_builder(model_type: str, model_name: str, crawl_type: str):
     if model_type not in SUPPORTED_MODELS:
@@ -24,5 +21,4 @@ def llm_builder(model_type: str, model_name: str, crawl_type: str):
 
     service_class = globals()[class_name]
 
-    # Instantiate the class with the model name
     return service_class(model_name)

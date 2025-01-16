@@ -1,5 +1,4 @@
 import json
-
 from services.socket import ConnectionManager
 
 
@@ -15,10 +14,6 @@ class Orchestrator:
 
         await manager.send_message(user_id, "Starting crawling process...")
         crawl_result = await self.crawler_service.crawl()
-        # crawl_result = [
-        #     {"role": "user", "content": "hey just write me 5 tokens random"},
-        #     {"role": "system", "content": "You are an assistant to superman "}
-        # ]
 
         status_message = dict(type="status", message="Processing content with LLM...")
         await manager.send_message(user_id, json.dumps(status_message))

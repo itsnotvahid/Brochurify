@@ -1,7 +1,7 @@
 from fastapi import WebSocket
 from uuid import uuid4
 
-from exceptions import BadContent
+from exceptions import InvalidContent
 
 
 class ConnectionManager:
@@ -34,7 +34,7 @@ class ConnectionManager:
     def get_user_state(self, unique_id):
         user = self.user_states.get(unique_id, None)
         if user is None:
-            raise BadContent()
+            raise InvalidContent()
         return self.user_states[unique_id].get("user_state", None)
 
     def modify_user_state(self, unique_id, state):

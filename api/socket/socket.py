@@ -9,10 +9,11 @@ from services.socket import ConnectionManager
 manager = ConnectionManager()
 router = APIRouter()
 
+
 @router.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
+    user_unique_id = await manager.connect(websocket)
     try:
-        user_unique_id = await manager.connect(websocket)
         data = await websocket.receive_text()
         data = json.loads(data)
         user_state = manager.get_user_state(user_unique_id)
@@ -38,9 +39,8 @@ async def websocket_endpoint(websocket: WebSocket):
                                is_complete=False)
                 await manager.send_message(user_unique_id, json.dumps(message))
 
-
-            status_message = dict(type="status", message="Disconncting YOU NOW")
-            message = dict(type="message", message="",
+            status_message = dict(type="status", message="Disconnecting YOU NOW")
+            message = dict(type="message", message="..",
                            is_complete=True)
             await manager.send_message(user_unique_id, json.dumps(message))
             await manager.send_message(user_unique_id, json.dumps(status_message))
