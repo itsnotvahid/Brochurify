@@ -57,7 +57,7 @@
             padding: 0;
             margin-top: 20px;
             text-align: left;
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
             background-color: #fff;
             border-radius: 20px;
@@ -113,7 +113,7 @@
 
         // Connect to WebSocket server
         function connectWebSocket() {
-            ws = new WebSocket("ws://127.101.43.41:8311/socket/ws");
+            ws = new WebSocket("ws://127.0.0.1:8912/socket/ws");
 
             ws.onopen = () => {
                 console.log("WebSocket connection established.");
