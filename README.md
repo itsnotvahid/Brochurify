@@ -1,9 +1,10 @@
 
-# **LLM Project**
+# Brochurify
 
-Welcome to the **LLM Project**! This project leverages cutting-edge Large Language Models (LLMs) to deliver [brief description of the goal of your project, e.g., "efficient webpage summarization and brochure generation"]. 🚀
+Welcome to Brochurify! This project leverages cutting-edge Large Language Models (LLMs) to deliver efficient webpage summarization and brochure generation.
 
-## **Table of Contents**
+## Table of Contents
+
 1. [About the Project](#about-the-project)
 2. [Features](#features)
 3. [Installation](#installation)
@@ -14,102 +15,99 @@ Welcome to the **LLM Project**! This project leverages cutting-edge Large Langua
 
 ---
 
-## **About the Project**
+## About the Project
 
-![Project Banner](https://via.placeholder.com/1000x300.png?text=Your+Project+Banner+Here)  
-_An innovative project that simplifies website data extraction and summarization._
+An innovative project that simplifies website data extraction and summarization.
 
-**Key Technologies:**
-- 🖥️ FastAPI for blazing-fast backend APIs
-- 🐋 Docker for containerized deployments
-- 📡 WebSockets for real-time communication
-- 🧠 LLMs for summarization and brochure generation
+Key Technologies:
+- FastAPI for backend APIs
+- WebSockets for real-time communication
+- LLMs for summarization and brochure generation
 
 ---
 
-## **Features**
-✨ **Webpage Summarization**: Provide a URL and get a concise summary.  
-📑 **Brochure Creation**: Generate a visually appealing, structured brochure from a website.  
-⚡ **Real-time Processing**: Instant feedback using WebSockets.
+## Features
+
+- **Webpage Summarization:** Provide a URL and get a concise summary.
+- **Brochure Creation:** Generate a visually appealing, structured brochure from a website.
+- **Real-time Processing:** Instant feedback using WebSockets.
 
 ---
 
-## **Installation**
+## Installation
 
 Follow these steps to set up the project locally:
 
-1. **Clone the Repository**:
+1. **Clone the Repository:**
+
    ```bash
-   git clone https://github.com/itsnotvahid/LLM_Proj.git
-   cd LLM_Proj
+   git clone https://github.com/itsnotvahid/Brochurify.git
+   cd Brochurify
    ```
 
-2. **Set Up Environment**:
-   Install dependencies using pip:
+2. **Create a Virtual Environment:**
+
+   It's recommended to use a virtual environment to manage dependencies.
+
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scriptsctivate`
+   ```
+
+3. **Install Dependencies:**
+
+   Ensure you have `pip` installed. Then, install the required packages:
+
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Run Docker (Optional)**:
-   If using Docker:
+4. **Create a `.env` File:**
+
+   The application requires certain environment variables. Create a `.env` file in the root directory with the following content:
+
+   ```env
+   OPENAI_API_KEY=your_openai_api_key_here
+   # Add any other environment variables as needed
+   ```
+
+   Replace `your_openai_api_key_here` with your actual OpenAI API key. Ensure this file is included in your `.gitignore` to prevent it from being tracked by version control.
+
+---
+
+## Usage
+
+To run the application:
+
+1. **Start the FastAPI Server:**
+
    ```bash
-   docker-compose up
+   uvicorn main:app --reload
    ```
 
-4. **Start the Application**:
-   Run the FastAPI server:
-   ```bash
-   uvicorn api.main:app --reload
-   ```
+2. **Access the Application:**
+
+   Open your browser and navigate to `http://localhost:8000` to interact with the application.
 
 ---
 
-## **Usage**
+## Project Structure
 
-1. Open your browser and navigate to:
-   ```
-   http://localhost:8000/docs
-   ```
-
-2. Use the Swagger UI to interact with the API.
-
-3. Upload a URL and retrieve its summarized content or generate a brochure.  
-
-### **Sample Output**
-
-**Input Website**: `example.com`  
-**Generated Brochure**:  
-![Sample Brochure](https://via.placeholder.com/500x400.png?text=Sample+Brochure)
+- `main.py`: The entry point of the application.
+- `api/`: Contains the API endpoints.
+- `services/`: Includes the core logic for summarization and brochure generation.
+- `static/`: Holds static files like CSS and JavaScript.
+- `templates/`: Contains HTML templates for rendering web pages.
+- `exceptions.py`: Custom exception handling.
 
 ---
 
-## **Project Structure**
+## Contributing
 
-```plaintext
-LLM_Proj/
-│
-├── api/                # FastAPI application
-├── services/           # Core logic and business rules
-├── static/             # Static assets (CSS, images)
-├── exceptions.py       # Custom exception handling
-├── Dockerfile          # Docker configuration
-├── README.md           # Documentation
-└── requirements.txt    # Python dependencies
-```
+Contributions are welcome! Please fork the repository and create a pull request with your changes.
 
 ---
 
-## **Contributing**
+## License
 
-Contributions are welcome!  
-1. Fork the repository.  
-2. Create a feature branch: `git checkout -b feature-name`.  
-3. Commit changes: `git commit -m "Add new feature"`.  
-4. Push to branch: `git push origin feature-name`.  
-5. Open a pull request.  
-
----
-
-## **License**
-
-Distributed under the MIT License. See `LICENSE` for details.
+This project is licensed under the MIT License.
