@@ -13,14 +13,16 @@ router = APIRouter()
 async def websocket_endpoint(websocket: WebSocket):
     try:
         user_unique_id = await manager.connect(websocket)
-        status_message = {"type": "status", "message": "Processing your request..."}
         data = await websocket.receive_text()
         data = json.loads(data)
         user_state = manager.get_user_state(user_unique_id)
         if not user_state:
             orchestrator = Orchestrator(crawler_service=CrawlerService(url=data['url'],
                                                                        crawl_type=data['crawlType']),
-                                        llm_service=LLMService("hello"))
+                                        llm_service=LLMService(model_type='openai',
+                                                               model_name="gpt-4o-mini",
+                                                               crawl_type='summarize'))
+
             status_message = dict(type="status", message="Processing your request...")
 
             await manager.send_message(unique_id=user_unique_id,
@@ -29,13 +31,13 @@ async def websocket_endpoint(websocket: WebSocket):
             manager.modify_user_state(user_unique_id, "crawling")
 
             async for update in orchestrator.stream_website_data(
-                user_id=user_unique_id,
-                manager=manager
-            ):
+                    user_id=user_unique_id, manager=manager,
+                    description=data['description'], url=data['url'],
+                    site_type=data['siteType']):
                 message = dict(type="message", message=update,
                                is_complete=False)
                 await manager.send_message(user_unique_id, json.dumps(message))
-            orchestrator.stream_website_data(user_id=user_unique_id, manager=manager)
+
 
             status_message = dict(type="status", message="Disconncting YOU NOW")
             message = dict(type="message", message="",

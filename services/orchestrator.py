@@ -8,18 +8,21 @@ class Orchestrator:
         self.crawler_service = crawler_service
         self.llm_service = llm_service
 
-    async def stream_website_data(self, user_id: str, manager: ConnectionManager):
+    async def stream_website_data(self, user_id: str, manager: ConnectionManager,
+                                  description,
+                                  site_type,
+                                  url):
 
         await manager.send_message(user_id, "Starting crawling process...")
         crawl_result = await self.crawler_service.crawl()
-        crawl_result = [
-            {"role": "user", "content": "hey just write me 5 tokens random"},
-            {"role": "system", "content": "You are an assistant to superman "}
-        ]
-        status_message = dict(type="status", message="Processing content with LLM...")
+        # crawl_result = [
+        #     {"role": "user", "content": "hey just write me 5 tokens random"},
+        #     {"role": "system", "content": "You are an assistant to superman "}
+        # ]
 
+        status_message = dict(type="status", message="Processing content with LLM...")
         await manager.send_message(user_id, json.dumps(status_message))
         async for llm_update in self.llm_service.generate_response(
-            crawl_result=crawl_result
-        ):
+                url=url, crawl_result=crawl_result, description=description,
+                site_type=site_type):
             yield llm_update

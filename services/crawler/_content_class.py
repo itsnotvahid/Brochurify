@@ -1,8 +1,8 @@
 from dataclasses import dataclass
+from pydantic import BaseModel
 
-
-@dataclass
-class URLContent:
+# @dataclass
+class URLContent(BaseModel):
     url: str
     content: str
 

@@ -34,7 +34,7 @@ class BS4Crawler(CrawlerBase):
     async def crawl(self):
         async with aiohttp.ClientSession() as session:
             main_page_text, soup = await self.main_page_crawl(session)
-            self.url_contents.append(URLContent(self.url, main_page_text))
+            self.url_contents.append(dict(url=self.url, content=main_page_text))
             self.visited_links.append(self.url)
             links = [link.get('href') for link in soup.find_all('a')]
 
