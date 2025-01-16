@@ -18,7 +18,7 @@ Welcome to Brochurify! This project is designed to simplify website data extract
 An innovative project that simplifies website data extraction and summarization.
 
 Key Technologies:
-- FastAPI for backend APIs
+- FastAPI
 - WebSockets for real-time communication
 - LLMs for summarization and brochure generation
 
